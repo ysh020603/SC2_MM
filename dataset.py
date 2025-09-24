@@ -7,17 +7,30 @@ import config
 
 class SC2EntityDataset(Dataset):
     """星际争霸实体数据集"""
-    def __init__(self, data_path, tokenizer):
+    def __init__(self, data_paths, tokenizer): # <-- 参数名从 data_path 改为 data_paths
         self.tokenizer = tokenizer
-        self.data = self._load_data(data_path)
+        # --- MODIFIED: 调用 _load_data 加载多个文件 ---
+        self.data = self._load_data(data_paths)
         
-    def _load_data(self, data_path):
-        data = []
-        with open(data_path, 'r', encoding='utf-8') as f:
-            # for line in f:
-            #     data.append(json.loads(line))
-            data = json.load(f)
-        return data
+    def _load_data(self, data_paths): # <-- 参数名从 data_path 改为 data_paths
+        """从文件路径列表中加载并合并数据。"""
+        # --- MODIFIED: 检查输入是单个文件还是列表 ---
+        # 这样做可以保持代码的向后兼容性，如果传入的是单个字符串，也能正常工作
+        if isinstance(data_paths, str):
+            paths = [data_paths]
+        else:
+            paths = data_paths
+
+        all_data = []
+        # --- MODIFIED: 循环读取所有文件 ---
+        print(f"Loading data from: {paths}")
+        for path in paths:
+            with open(path, 'r', encoding='utf-8') as f:
+                # 假设每个文件都是一个包含多个对象的JSON数组
+                data = json.load(f)
+                all_data.extend(data)
+        print(f"Total records loaded: {len(all_data)}")
+        return all_data
 
     def __len__(self):
         return len(self.data)
@@ -48,10 +61,9 @@ class SC2EntityDataset(Dataset):
         attention_mask = tokenized_output.attention_mask.squeeze(0)
 
         # 创建 labels，用于计算 loss
-        # Causal LM 的 labels 就是 input_ids 的一个副本
         labels = input_ids.clone()
         
-        # 将 prompt 部分的 labels 设置为 -100，这样在计算 loss 时就会被忽略
+        # 将 prompt 部分的 labels 设置为 -100
         labels[:prompt_len] = -100
 
         return {
