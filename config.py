@@ -2,8 +2,19 @@
 
 import torch
 
-# --- 路径配置 ---
-# 本地预训练模型路径
+# 训练后模型权重保存路径
+SAVE_PATH = "Qwen_3B_MLP_diff_prompt"
+
+# --- Checkpoint 配置 ---
+# Checkpoint 保存路径
+CHECKPOINT_PATH = f"{SAVE_PATH}/checkpoints"
+# 是否在训练时加载 Checkpoint (提供 Checkpoint 的完整路径)
+# 例如: "checkpoints/checkpoint_step_1000.pt"
+LOAD_CHECKPOINT_PATH = None
+# 每隔多少步保存一次 Checkpoint
+CHECKPOINT_SAVE_INTERVAL = 3000
+
+
 MODEL_PATH = "/9950backfile/zhangwt/model_llm/Qwen2___5-3B-Instruct"
 
 # 训练数据文件路径列表
@@ -16,9 +27,10 @@ DATA_PATHS = [
     # "/9950backfile/zhangwt/SC2_data/output_50000_to_60000_train.json",
     # "/9950backfile/zhangwt/SC2_data/train_data_prompt_modify.json",
     # "/9950backfile/zhangwt/SC2_data/train_data_prompt_only_flag_modify.json",
-    "/9950backfile/zhangwt/SC2_data/train_data_description_1_train.json",
+    # "/9950backfile/zhangwt/SC2_data/train_data_description_1_train.json",
     # "/9950backfile/zhangwt/SC2_data/train_data_description_3_train.json",
-    # "/9950backfile/zhangwt/SC2_data/train_data_description_2_train.json"
+    # "/9950backfile/zhangwt/SC2_data/train_data_description_2_train.json",
+    "/9950backfile/zhangwt/SC2_data/train_data_prompt_diff_100.json"
 ]
 
 # 验证数据文件路径 (可选)
@@ -28,10 +40,17 @@ DATA_PATHS = [
 VAL_DATA_PATH = None
 
 # 当 VAL_DATA_PATH 为 None 时，从训练集中抽取的样本数量
-VAL_SAMPLES_FROM_TRAIN = 30
+VAL_SAMPLES_FROM_TRAIN = 100
 
-# 训练后模型权重保存路径
-SAVE_PATH = "Qwen_3B_MLP_description_1"
+# --- 验证与日志配置 ---
+# 每隔多少步进行一次验证
+VALIDATION_INTERVAL = 100
+# 在验证时，随机打印多少个样例
+VALIDATION_EXAMPLES_TO_PRINT = 5
+# 每隔多少步，打印所有的验证样例
+PRINT_ALL_VALIDATION_EXAMPLES_INTERVAL = 1000
+
+
 
 # --- 模型配置 ---
 # 新添加的特殊 token
@@ -53,7 +72,7 @@ TRAIN_MODE = "mlp_only"
 LEARNING_RATE = 2e-5
 
 # 批处理大小
-BATCH_SIZE = 12
+BATCH_SIZE = 10
 
 # 训练轮数
 EPOCHS = 3
