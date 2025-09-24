@@ -1,0 +1,8 @@
+# requirements.txt
+
+torch
+transformers
+accelerate
+swanlab
+datasets
+tqdm
