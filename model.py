@@ -48,7 +48,7 @@ class Qwen2ForSC2Fusion(Qwen2ForCausalLM):
         embedding_dim = config.hidden_size
         self.projector = MLPProjector(
             input_dim=entity_vector_dim,
-            hidden_dim=embedding_dim*8,
+            hidden_dim=embedding_dim*2,
             output_dim=embedding_dim
         )
         self.sc2_entity_token_id = -1

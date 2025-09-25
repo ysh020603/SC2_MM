@@ -7,3 +7,9 @@ model/
 # 忽略日志文件夹
 swanlog/
 train_log/
+
+# 忽略所有 .log 文件
+*.log
+
+# 忽略 Qwen_3B_MLP_diff_prompt 文件夹
+Qwen_3B_MLP_diff_prompt/

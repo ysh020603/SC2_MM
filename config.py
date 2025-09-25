@@ -3,11 +3,11 @@
 import torch
 
 # 训练后模型权重保存路径
-SAVE_PATH = "Qwen_3B_MLP_diff_prompt"
+SAVE_PATH = "model/Qwen_3B_MLP_diff_prompt"
 
 # --- Checkpoint 配置 ---
 # Checkpoint 保存路径
-CHECKPOINT_PATH = f"{SAVE_PATH}/checkpoints"
+CHECKPOINT_PATH = f"model/{SAVE_PATH}/checkpoints"
 # 是否在训练时加载 Checkpoint (提供 Checkpoint 的完整路径)
 # 例如: "checkpoints/checkpoint_step_1000.pt"
 LOAD_CHECKPOINT_PATH = None
@@ -15,7 +15,7 @@ LOAD_CHECKPOINT_PATH = None
 CHECKPOINT_SAVE_INTERVAL = 3000
 
 
-MODEL_PATH = "/9950backfile/zhangwt/model_llm/Qwen2___5-3B-Instruct"
+MODEL_PATH = "/9950backfile/zhangwt/Qwen2___5-7B-Instruct"
 
 # 训练数据文件路径列表
 DATA_PATHS = [
