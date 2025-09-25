@@ -3,7 +3,7 @@
 import torch
 
 # 训练后模型权重保存路径
-SAVE_PATH = "model/Qwen_3B_MLP_diff_prompt"
+SAVE_PATH = "model/Qwen_7B_MLP_diff_prompt_diff_response_30100"
 
 # --- Checkpoint 配置 ---
 # Checkpoint 保存路径
@@ -17,6 +17,17 @@ CHECKPOINT_SAVE_INTERVAL = 3000
 
 MODEL_PATH = "/9950backfile/zhangwt/Qwen2___5-7B-Instruct"
 
+# --- 数据采样配置 (新功能) ---
+
+# 是否启用按比例采样。
+# - True: 将根据下面的 TOTAL_TRAIN_SAMPLES 和 DATA_PROPORTIONS 配置进行采样。
+# - False: 将加载 DATA_PATHS 中所有文件的全部数据（原始行为）。
+USE_PROPORTIONAL_SAMPLING = True
+
+# 目标训练集的总样本量 (仅在 USE_PROPORTIONAL_SAMPLING = True 时生效)
+# 您可以根据需要调整这个值
+TOTAL_TRAIN_SAMPLES = 30100
+
 # 训练数据文件路径列表
 DATA_PATHS = [
     # "/9950backfile/zhangwt/SC2_data/output_0_to_10000_train.json",
@@ -27,11 +38,21 @@ DATA_PATHS = [
     # "/9950backfile/zhangwt/SC2_data/output_50000_to_60000_train.json",
     # "/9950backfile/zhangwt/SC2_data/train_data_prompt_modify.json",
     # "/9950backfile/zhangwt/SC2_data/train_data_prompt_only_flag_modify.json",
-    # "/9950backfile/zhangwt/SC2_data/train_data_description_1_train.json",
-    # "/9950backfile/zhangwt/SC2_data/train_data_description_3_train.json",
-    # "/9950backfile/zhangwt/SC2_data/train_data_description_2_train.json",
+    "/9950backfile/zhangwt/SC2_data/train_data_description_1_train.json",
+    "/9950backfile/zhangwt/SC2_data/train_data_description_3_train.json",
+    "/9950backfile/zhangwt/SC2_data/train_data_description_2_train.json",
     "/9950backfile/zhangwt/SC2_data/train_data_prompt_diff_100.json"
 ]
+
+# 每个数据文件对应的采样比例 (列表顺序必须与 DATA_PATHS 严格对应)
+# 注意：所有比例之和必须等于 1.0
+DATA_PROPORTIONS = [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+]
+
 
 # 验证数据文件路径 (可选)
 # 1. 如果提供一个文件路径, 则会从该文件加载验证集。
@@ -72,10 +93,10 @@ TRAIN_MODE = "mlp_only"
 LEARNING_RATE = 2e-5
 
 # 批处理大小
-BATCH_SIZE = 10
+BATCH_SIZE = 8
 
 # 训练轮数
-EPOCHS = 3
+EPOCHS = 10
 
 # --- SwanLab 配置 ---
 # SwanLab 项目名称
